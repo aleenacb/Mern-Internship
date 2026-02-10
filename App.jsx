@@ -1,11 +1,34 @@
 import React from 'react'
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import Testing from './Components/Testing'
 import Firstapp from './Components/Firstapp'
-function App() {
+//import Testing from './Components/Testing'
+import './Components/style.css'
+import Typography from '@mui/material/Typography'
+import Register from './Components/MUI/Register'
+
+export default function App() {
   return (
+    
+      /* { <h1 style={{ color: "blue" }}>Inline CSS</h1> */
+      /* <Firstapp /> */
+      /* <Testing />*/
     <div>
-      <h1 style={{color:"blue"}}>Inline CSS</h1>
-      <Firstapp/>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Testing/>} />
+          <Route path='/' element={<Register/>}/>
+          <Route path='/' element={<Firstapp/>}/>
+          
+        </Routes>
+      </BrowserRouter>
     </div>
+    // mui installation
   )
-};
-export default App
+}
+
+//<></>->react fragments
+//php
+//task -> difference between pho and react
+//We can type instead of this npm install react-router-dom is npm i react-router-dom
+//Router->It is to navigate any file from one file to another
