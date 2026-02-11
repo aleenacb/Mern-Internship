@@ -2,23 +2,26 @@ import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import Testing from './Components/Testing'
 import Firstapp from './Components/Firstapp'
-//import Testing from './Components/Testing'
 import './Components/style.css'
 import Typography from '@mui/material/Typography'
 import Register from './Components/MUI/Register'
+import ArrowFunctions from './Components/ES7/ArrowFunctions'
+import BasicTable from './Components/MUI/BasicTable'
 
 export default function App() {
   return (
     
-      /* { <h1 style={{ color: "blue" }}>Inline CSS</h1> */
+      /* <h1 style={{ color: "blue" }}>Inline CSS</h1> */
       /* <Firstapp /> */
       /* <Testing />*/
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Testing/>} />
+          <Route path='/BasicTable' element={<BasicTable/>}></Route>
+          <Route path='/a' element={<Testing/>} />
           <Route path='/' element={<Register/>}/>
           <Route path='/' element={<Firstapp/>}/>
+          <Route path='/af' element={<ArrowFunctions/>}></Route>
           
         </Routes>
       </BrowserRouter>
