@@ -4,8 +4,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import image from '../image.jpg';
-import image1 from "../image1.png";
+import image from "./images/image.jpg";
+import image1 from "./images/image1.png";
 export default function MC() {
     const cardData = [
   {

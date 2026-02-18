@@ -3,7 +3,7 @@ import MUIAppbar from '../MUI/MUIAppbar'
 
 export default function Destructuring() {
     const number = [1, 2, 3, 4, 5, 6]
-    const [,,,d,e,f] = number
+    const [,,,d,e] = number
     const num4 = number[0]
   return (
     <div>
