@@ -1,0 +1,10 @@
+.myclass {
+    border: 2px black double;
+    border-radius: 30px;
+    color: darkgreen;
+    margin: 0px;
+    padding: 10px;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
