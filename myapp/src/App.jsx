@@ -13,6 +13,13 @@ import SpreadOperator from './Components/ES7/SpreadOperator'
 import MC from './Components/ES7/MC'
 import MUIAppbar from './Components/MUI/MUIAppbar'
 import Destructuring from './Components/ES7/Destructuring'
+import ImportModule from './Components/ES7/ImportModule'
+//import ExportModule from './Components/ES7/ExportModule'
+import TernaryOperator from './Components/ES7/TernaryOperator'
+import Props from './Components/ES7/Props'
+import HookUseState from './Components/Hook/HookUseState'
+import Counter from './Components/Hook/Counter'
+import ColorMode from './Components/Hook/ColorMode'
 export default function App() {
   return (
     
@@ -22,6 +29,11 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Routes>
+          <Route path='/' element={<ColorMode/>}></Route>
+          <Route path='/'element={<Counter/>}></Route>
+          <Route path='/Hook' element={<HookUseState/>}></Route>
+          <Route path='/Props' element={<Props name={"Aleena"} />}></Route>
+          <Route path='/' element={<ImportModule/>}></Route>
           <Route path='/Destructuring'element={<Destructuring/>}></Route>
           <Route path='/MUIAppbar'element={<MUIAppbar/>}></Route>
           <Route path='/' element={<MC/>}></Route>
@@ -32,7 +44,7 @@ export default function App() {
           <Route path='/Register' element={<Register/>}/>
           <Route path='/' element={<Firstapp/>}/>
           <Route path='/af' element={<ArrowFunctions/>}></Route>
-          
+          <Route path='/TernaryOperator' element={<TernaryOperator/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
