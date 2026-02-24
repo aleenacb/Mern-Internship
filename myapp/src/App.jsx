@@ -20,6 +20,10 @@ import Props from './Components/ES7/Props'
 import HookUseState from './Components/Hook/HookUseState'
 import Counter from './Components/Hook/Counter'
 import ColorMode from './Components/Hook/ColorMode'
+import UseEffect from './Components/Hook/HookUseEffect'
+import DarkMode from './Components/Hook/DarkMode'
+import ApiAxios from './Components/Hook/ApiAxios'
+import HookUseEffectProduct from './Components/Hook/HookUseEffectProduct'
 export default function App() {
   return (
     
@@ -29,20 +33,24 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<ColorMode/>}></Route>
-          <Route path='/'element={<Counter/>}></Route>
+          <Route path='/Product' element={<HookUseEffectProduct/>}></Route>
+          <Route path='/ApiAxios'element={<ApiAxios/>}></Route>
+          <Route path='/UseEffect' element={<UseEffect/>}></Route>
+          <Route path='/DarkMode'element={<DarkMode/>}></Route>
+          <Route path='/ColorMode' element={<ColorMode/>}></Route>
+          <Route path='/Counter'element={<Counter/>}></Route>
           <Route path='/Hook' element={<HookUseState/>}></Route>
           <Route path='/Props' element={<Props name={"Aleena"} />}></Route>
-          <Route path='/' element={<ImportModule/>}></Route>
+          <Route path='/ImportModule' element={<ImportModule/>}></Route>
           <Route path='/Destructuring'element={<Destructuring/>}></Route>
           <Route path='/MUIAppbar'element={<MUIAppbar/>}></Route>
-          <Route path='/' element={<MC/>}></Route>
+          <Route path='/MC' element={<MC/>}></Route>
           <Route path='/spread' element={<SpreadOperator/>}></Route>
-          <Route path='/'element={<ArrayMethod/>}></Route>
+          <Route path='/ArrayMethod'element={<ArrayMethod/>}></Route>
           <Route path='/BasicTable' element={<BasicTable/>}></Route>
           <Route path='/Testing' element={<Testing/>} />
           <Route path='/Register' element={<Register/>}/>
-          <Route path='/' element={<Firstapp/>}/>
+          <Route path='/FirstApp' element={<Firstapp/>}/>
           <Route path='/af' element={<ArrowFunctions/>}></Route>
           <Route path='/TernaryOperator' element={<TernaryOperator/>}></Route>
         </Routes>
@@ -51,9 +59,3 @@ export default function App() {
     // mui installation
   )
 }
-
-//<></>->react fragments
-//php
-//task -> difference between php and react
-//We can type instead of this npm install react-router-dom is npm i react-router-dom
-//Router->It is to navigate any file from one file to another
