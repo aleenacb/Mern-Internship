@@ -1,31 +1,22 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express')
+const cors = require('cors')
+const dbconnection = require('./config/db')
 
-const app = express();
-app.use(express.json());
+const app = express()
 
-mongoose.connect("mongodb://127.0.0.1:27017/mydb")
-.then(()=> console.log("MongoDB connected Succesfully!"))
-.catch((err)=> console.log(err));
+app.use(cors())
+app.use(express.json())
 
-const userSchema = new mongoose.Schema({
-  name:String,
-  email:String
-});
+dbconnection()
 
-const User = mongoose.model("User", userSchema);
+// test route
+app.get('/apitest',(req,res)=>{
+    res.send('API is working fine')
+})
 
-app.post("/adduser", async(req,res)=>{
-  const user = new User(req.body);
-  await user.save();
-  res.send("User Added");
-});
+// user routes
+app.use('/user', require('./routes/userRoutes'))
 
-app.get("/users", async(req,res)=>{
-  const data = await User.find();
-  res.json(data);
-});
-
-app.listen(5000, ()=>{
-  console.log("Server running on port 5000");
-});
+app.listen(7000,()=>{
+    console.log("Server running on port 7000")
+})
