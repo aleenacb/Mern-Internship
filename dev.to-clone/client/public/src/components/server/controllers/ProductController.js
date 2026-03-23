@@ -1,54 +1,65 @@
-const productTable = require('../Models/ProductModel');
+const productTable = require('../models/ProductModel');
 
-const addProduct = async (req,res)=>{
+const addProduct = async (req, res) => {
     try {
-        const {name,description,price,category} = req.body 
-        const productDetails = new productTable({name,description,price,category})
+        const { name, description, price, quantity, categoryId } = req.body  // ← Fix: remove category, add quantity, categoryId
+        const pimage = req.file ? req.file.filename:null
+        const productDetails = new productTable({ name, description, price, quantity, categoryId })
         await productDetails.save()
-        res.status(201).json({message: "Product added successfully", pdata: productDetails})
+
+        res.status(201).json({ message: "Product added successfully", pdata: productDetails, productimage:pimage })
     } catch (error) {
         console.error("Error adding product:", error)
-        res.status(500).json({message: "Server error", error})
+        res.status(500).json({ message: "Server error", error })
     }
 }
 
-const getProducts = async (req,res)=>{
+const getProducts = async (req, res) => {
     try {
         const products = await productTable.find()
-        res.status(200).json({message: "Products retrieved successfully", pdata: products})
+        res.status(200).json({ message: "Products retrieved successfully", pdata: products })
     } catch (error) {
         console.error("Error retrieving products:", error)
-        res.status(500).json({message: "Server error", error})
+        res.status(500).json({ message: "Server error", error })
     }
 }
 
-const editProduct = async (req,res)=>{
+const UpdateProduct = async (req, res) => {
     try {
-        const {id} = req.params
-        const {name,description,price,category} = req.body 
-        const updatedProduct = await productTable.findByIdAndUpdate(id, {name,description,price,category}, {new: true})
+        const { id } = req.params
+        const { name, description, price, quantity, categoryId } = req.body  // ← Fix: remove category, add quantity, categoryId
+
+        const updatedProduct = await productTable.findByIdAndUpdate(
+            id,
+            { name, description, price, quantity, categoryId },  // ← Fix
+            { new: true }
+        )
+
         if (!updatedProduct) {
-            return res.status(404).json({message: "Product not found"})
+            return res.status(404).json({ message: "Product not found" })
         }
-        res.status(200).json({message: "Product updated successfully", pdata: updatedProduct})
+
+        res.status(200).json({ message: "Product updated successfully", pdata: updatedProduct })
     } catch (error) {
         console.error("Error updating product:", error)
-        res.status(500).json({message: "Server error", error})
+        res.status(500).json({ message: "Server error", error })
     }
 }
 
-const deleteProduct = async (req,res)=>{
+const deleteProduct = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const deletedProduct = await productTable.findByIdAndDelete(id)
+
         if (!deletedProduct) {
-            return res.status(404).json({message: "Product not found"})
+            return res.status(404).json({ message: "Product not found" })
         }
-        res.status(200).json({message: "Product deleted successfully", pdata: deletedProduct})
+
+        res.status(200).json({ message: "Product deleted successfully", pdata: deletedProduct })
     } catch (error) {
         console.error("Error deleting product:", error)
-        res.status(500).json({message: "Server error", error})
+        res.status(500).json({ message: "Server error", error })
     }
-}   
+}
 
-module.exports = { addProduct, getProducts, editProduct, deleteProduct }
+module.exports = { addProduct, getProducts, UpdateProduct, deleteProduct }
