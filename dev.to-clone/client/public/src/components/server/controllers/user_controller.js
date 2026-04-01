@@ -1,72 +1,139 @@
+const jwt = require("jsonwebtoken")
+const SECRET_KEY = "product-crud"
+
 const usertable = require("../models/user_models")
 
-const registeruser = async(req, res)=> {
-    try{
-        const{name, email, password, phone} = req.body
-        const userdetails = new usertable({
-            name,
-            email,
-            password,
-            phone
-        })
-        await userdetails.save();
-        res.status(201).json(
-            {message:"User added successfully",udata:userdetails}
-        )
-    } catch(error) {
-        console.log(error)
-        res.status(500).json({message:"server error", error})
-    }
-}
-const getUser = async(req, res)=> {
+const registerUser = async (req,res)=>{
     try {
-        const getallUsers = await usertable.find()
-        console.log(getallUsers)
-        res.status((200).json({message:"User fetched", allusers:getallUsers}))
+        const {name,email,password,phone,address} = req.body
+        const useremail = await usertable.findOne({email})
+        if(useremail) {
+            res.json({message:"email already exists"})
+        }
+        const userdetails = new usertable
+        ({name,
+        email,
+        password,
+        phone,
+        address
+        })
+        await userdetails.save()
+        res.status(201).json({message: "User registered successfully", udata: userdetails})
     } catch (error) {
-        console.log(error)
-        res.status((500).json({message:"server error",error}))
+        console.error("Error registering user:", error)
+        res.status(500).json({message: "Server error", error})
     }
 }
 
-const getuserbyid=async(req, res)=> {
+const getUsers = async (req,res)=>{
+    try {
+        const getAllUsers = await usertable.find()
+        res.status(200).json({message: "Users fetched successfully", alluser: getAllUsers})
+    } catch (error) {
+        console.error("Error fetching users:", error)
+        res.status(500).json({message: "Server error", error})
+    }
+}
+
+const getUserById = async (req,res)=>{
     try {
         const uid = req.params.id
-        const userbyid = await usertable.findById
-        console.log(userbyid)
-        res.status(200).json({message:"user found",byid:userbyid})
-    } catch (error) {
-        console.log(error)
-        res.status((500).json({message:"server error",error}))
+        const getUserById = await usertable.findById(uid)
+        res.status(200).json({message: "User Fetched Successflly", byid: getUserById})
+      } catch (error) {
+        console.error("Error fetching users:", error)
+        res.status(500).json({message: "Server error", error})
     }
-}
-const deleteuser = async(req, res)=>{
-    try {
-        const d_id = req.params.id
-        const deleteuser = await usertable.findByIdAndDelete(d_id)
-        console.log(deleteuser)
-        res.status(200).json({message:"user deleted", d_user:deleteuser})
-    } catch (error) {
-    console.log(error)
-    res.status((500).json({message:"server error",error}))
+} 
+
+const deleteUser = async(req, res)=>{
+    try{
+        const duid = req.params.id
+        const deleteUserById = await usertable.findByIdAndDelete(duid)
+        console.log(deleteUserById)
+        res.status(200).json({message:"User Deleted Successfully", dubyid : deleteUserById})
+    }catch(error){
+        console.error("Error fetching users:", error)
+        res.status(500).json({message: "Server error", error})
     }
 }
 
-const updateuser = async(req,res)=>{
-    try {
-    //    const u_id = req.params.id 
+const updateUser = async(req, res)=>{
+    try{
         const {id} = req.params
         const body = req.body
-        const updateuser = await usertable.findByIdAndUpdate(id, body,{new:true})
-        console.log(updateuser)
-        res.status(201).json({message:"user updated", updatedata:updateuser})
-    } catch (error) {
-        console.log(error)
-        res.status((500).json({message:"server error", error}))
+
+        const updatedUser = await usertable.findByIdAndUpdate(id, body, {new:true})
+
+        res.status(201).json({message:"User Updated Successfully", userupdate : updatedUser})
+    }catch(error){
+        console.error("Error updating users:", error)
+        res.status(500).json({message: "Server error", error})
     }
 }
-// module.exports = registeruser
-// module.exports = getUser
 
-// or 
-module.exports = {registeruser, getUser, getuserbyid, deleteuser, updateuser}
+const Login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        console.log("Received:", email, password);
+
+        const userlogin = await usertable.findOne({ 
+            email: email,
+            password: Number(password)  
+        });
+
+        console.log("User found:", userlogin);
+
+        if (!userlogin) {
+            return res.json({ success: false, message: "Invalid details" });
+        }
+
+        const token = jwt.sign({ id: userlogin._id }, SECRET_KEY, { expiresIn: '1d' });
+        return res.json({ 
+            success: true, 
+            message: "Login successful!", 
+            token,
+            user: userlogin
+        });
+
+    } catch (error) {
+        console.error("Error logging in:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
+const getProfile = async (req, res) => {
+    try {
+        const user = await usertable.findById(req.userid)
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+const updateProfile = async (req, res) => {
+    try {
+        const body = req.body
+        const updatedUser = await usertable.findByIdAndUpdate(req.userid, body, { new: true })
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        res.status(200).json({ message: "Profile updated successfully", user: updatedUser })
+    } catch (error) {
+        console.error("Error updating profile:", error)
+        res.status(500).json({ message: "Server error", error })
+    }
+}
+module.exports = { registerUser, getUsers, getUserById, deleteUser, updateUser, Login, getProfile, updateProfile }
