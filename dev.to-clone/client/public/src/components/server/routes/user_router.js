@@ -1,24 +1,14 @@
-const express = require('express');
-const {registeruser, getUser, getuserbyid, deleteuser, updateuser} = require('../controllers/user_controller');
+const express = require('express')
+const {registerUser, getUsers, getUserById, deleteUser, updateUser, Login, getProfile, updateProfile} = require('../controllers/user_controller')
+const auth = require("../middleware/Auth")
+const route = express.Router()
 
-const route = express.Router();
-
-route.post('/registeruser',registeruser)
-// registeruser = require('../controllers/user_controller')
-route.get('/getUser', getUser)
-route.get('/getuserbyid/:id',getuserbyid)
-route.delete('/deleteuser/:id', deleteuser)
-route.put('/updateuser/:id', updateuser)
+route.post('/registerUser', registerUser)
+route.post('/Login',Login)
+route.get('/getUsers', getUsers)
+route.get('/getUserById/:id', getUserById)
+route.delete('/deleteuserbyid/:id', deleteUser)
+route.put('/updateUser/:id', updateUser)
+route.get('/getProfile/', auth, getProfile)
+route.put('/updateProfile', auth, updateProfile)
 module.exports = route
-
-/*const express = require("express");
-
-const { registerUser, getUsers } = require("../controllers/userController");
-
-const router = express.Router();
-
-router.post("/register", registeruser);
-
-router.get("/users", getUsers);
-
-module.exports = router;*/
