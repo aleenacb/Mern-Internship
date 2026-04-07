@@ -122,18 +122,36 @@ const getProfile = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
-    try {
-        const body = req.body
-        const updatedUser = await usertable.findByIdAndUpdate(req.userid, body, { new: true })
+  try {
+    const { name, email, password, phone, address } = req.body
 
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" })
-        }
+    const updateData = { name, email, phone, address }
 
-        res.status(200).json({ message: "Profile updated successfully", user: updatedUser })
-    } catch (error) {
-        console.error("Error updating profile:", error)
-        res.status(500).json({ message: "Server error", error })
+    // ✅ Only update password if provided
+    if (password) {
+      updateData.password = password  // hash it if you use bcrypt
     }
+
+    // ✅ Handle both images from req.files
+    if (req.files?.profileimage) {
+      updateData.profileimage = req.files.profileimage[0].filename
+    }
+
+    if (req.files?.coverimage) {
+      updateData.coverimage = req.files.coverimage[0].filename
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,        // from your auth middleware
+      updateData,
+      { new: true }
+    )
+
+    res.status(200).json({ message: "Profile updated", user: updatedUser })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Update failed", error: error.message })
+  }
 }
 module.exports = { registerUser, getUsers, getUserById, deleteUser, updateUser, Login, getProfile, updateProfile }
